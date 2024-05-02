@@ -1,0 +1,13 @@
+interface=$WLAN_OPN
+driver=nl80211
+
+hw_mode=g
+channel=6
+ssid=wifi-guest
+
+wpa=0
+
+#macaddr_acl=1
+#accept_mac_file=/root/open/acceptMac.txt
+
+ap_isolate=1
