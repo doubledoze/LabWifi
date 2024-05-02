@@ -250,11 +250,11 @@ hashcat -a 0 -m 5500 hashcat.5500 rockyou.txt --force
 # WPA Enterprise (MGT) - Phishing + RogueAP / Responder + RogueAP
 
 # WPA Enterprise (MGT) - Récupération de la CA légitime et utilisation sur un RogueAP
-```
 
 # Annexe wpa_supplicant 
 
 Créez un fichier `wifi.conf` avec le contenu suivant, remplacez `$SSID` par la valeur que vous avez trouvé à l'étape précédente :
+
 ```
 network={
 	ssid="$SSID"
