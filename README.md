@@ -18,9 +18,9 @@ sudo airodump-ng wlan0mon --manufacturer --wps --band abg
 
 Répondez aux questions suivantes :
 1. Combien de réseau Wi-Fi identifiez-vous ?
-2. Quels sont les différents types de chiffrement présents ?
-3. Quels sont les réseaux Wi-Fi qui fonctionnent en 5 GHz ?
-4. Quel est l'adresse MAC de wifi-IT ?
+2. Quels sont les différents `types de chiffrement` présents ?
+3. Quels sont les réseaux Wi-Fi qui fonctionnent en `5 GHz` ?
+4. Quel est l'adresse MAC de `wifi-IT` ?
 5. A quel réseau est connecté le client `28:6C:07:6F:F9:44` ?
 6. Quel sont les réseaux que recherche le client `78:C1:A7:BF:72:46` (probes) ?
 
@@ -86,7 +86,7 @@ Laissez tourner cette capture quelques minutes puis ouvrez le fichier généré 
 
 Connectez-vous au réseau Wi-Fi, essayez d'accéder à http://192.168.2.1/ puis insérez le cookie dans le stockage de votre navigateur, actualisez la page et constatez le flag.
 
-12. Quel est le flag obtenu sur l'interface 192.168.2.1 ?
+12. Quel est le flag obtenu sur l'interface web `192.168.2.1` ?
 
 13. Est-ce que nous sommes sur un réseau Wi-Fi disposant d'isolation des clients ?
 
