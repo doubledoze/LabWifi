@@ -306,9 +306,11 @@ dhclient wlan3 -v
 ```
 Et récupérez le flag sur l'interface WEB en .1 :
 
-22. Quel est le FLAG obtenu via l'attaque relais ?
+22. Quel est le FLAG obtenu via l'attaque relais sur le PA wifi-regional-tablets ?
 
+Faites pareil avec le point d'accès `wifi-regional` et son client connecté `64:32:a8:a9:de:55`.
 
+23. Quel est le FLAG obtenu via l'attaque relais sur le PA wifi-regional ?
 
 
 
